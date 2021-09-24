@@ -5,7 +5,18 @@
 int main() {
     printf("Start the named pipe client\n");
 
-    LPCSTR pipename = "\\\\.\\pipe\\name";
+    LPCSTR pipename = "\\\\.\\pipe\\demoNamedPipe";
+    BOOL success;
+    DWORD error;
+
+    printf("Wait for the pipe to become available\n");
+    success = WaitNamedPipe(pipename, NMPWAIT_USE_DEFAULT_WAIT);
+    error = GetLastError();
+    printf("WaitNamedPipe error %d\n", error);
+    assert(error == ERROR_SUCCESS);
+    assert(success == TRUE);
+
+    printf("Create the pipe\n");
     HANDLE pipe = CreateFile(
         pipename,
         GENERIC_READ,
@@ -15,10 +26,10 @@ int main() {
         FILE_ATTRIBUTE_NORMAL,
         NULL
     );
+    error = GetLastError();
+    printf("CreateFile error %d\n", error);
+    assert(error == ERROR_SUCCESS);
     assert(pipe != INVALID_HANDLE_VALUE);
-    assert(GetLastError() == ERROR_SUCCESS);
-
-    BOOL success;
 
     printf("Read from the server\n");
 
@@ -30,17 +41,25 @@ int main() {
     success = ReadFile(
         pipe,
         (LPVOID)buffer,
-        bytes_to_read,
+        maxMessageLength,
         &bytes_read,
         NULL
     );
+    error = GetLastError();
+    printf("ReadFile error %d\n", error);
+    assert(error == ERROR_SUCCESS);
     assert(success == TRUE);
     assert(bytes_to_read == bytes_read);
     assert(strncmp(buffer, expected_data, bytes_to_read) == 0);
-    assert(GetLastError() == ERROR_SUCCESS);
 
     printf("Cleanup\n");
 
-    CloseHandle(pipe);
+    success = CloseHandle(pipe);
+    error = GetLastError();
+    printf("CloseHandle error %d\n", error);
+    assert(error == ERROR_SUCCESS);
+    assert(success == TRUE);
+
+    printf("Exiting\n");
     return 0;
 }

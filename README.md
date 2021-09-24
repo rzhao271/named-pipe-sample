@@ -13,3 +13,8 @@ This sandbox shows an example of using the named pipe API with byte-type pipes.
 3. Run the server executable in a terminal.
 4. Run the client executable in another terminal.
 5. If the output doesn't have any line starting with "Assertion failed", the program ran successfully.
+
+## Troubleshooting
+
+- There is a list of Windows error codes at https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-
+- A summary of named pipe operations is at https://docs.microsoft.com/en-us/windows/win32/ipc/named-pipe-operations
