@@ -5,12 +5,13 @@
 #define USE_CONNECT 1
 #define LOOP_FOR_CLIENTS 1
 
+#define MAX_MESSAGE_LENGTH 32 * 1024
+
 int main() {
     printf("Start the named pipe server\n");
 
     LPCSTR pipename = "\\\\.\\pipe\\demoNamedPipe";
     DWORD maxInstances = PIPE_UNLIMITED_INSTANCES;
-    DWORD maxMessageLength = 32 * 1024;
     DWORD defaultTimeout = 5000;
     BOOL success;
     DWORD error;
@@ -21,7 +22,7 @@ int main() {
         PIPE_ACCESS_OUTBOUND,
         PIPE_TYPE_BYTE,
         maxInstances,
-        maxMessageLength,
+        MAX_MESSAGE_LENGTH,
         0,
         defaultTimeout,
         NULL

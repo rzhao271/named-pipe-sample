@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <windows.h>
 
+#define MAX_MESSAGE_LENGTH 32 * 1024
+
 int main() {
     printf("Start the named pipe client\n");
 
@@ -36,12 +38,11 @@ int main() {
     LPCSTR expected_data = "Data here";
     DWORD bytes_to_read = (strlen(expected_data) + 1) * sizeof(CHAR);
     DWORD bytes_read = 0;
-    DWORD maxMessageLength = 32 * 1024;
-    CHAR buffer[maxMessageLength];
+    CHAR buffer[MAX_MESSAGE_LENGTH];
     success = ReadFile(
         pipe,
         (LPVOID)buffer,
-        maxMessageLength,
+        MAX_MESSAGE_LENGTH,
         &bytes_read,
         NULL
     );
